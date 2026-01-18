@@ -1,7 +1,7 @@
 const App = () => {
   return (
     <>
-      <div className="bg-sky-400">테스트용 페이지</div>
+      <div className="bg-sky-400">자동 CI/CD 테스트</div>
     </>
   );
 };
