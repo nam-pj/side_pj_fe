@@ -19,4 +19,5 @@ jobs:
                       cd /volume1/docker/side_pj_fe/side_pj_fe
                       git fetch origin main
                       git reset --hard origin/main
-                      echo "${{ secrets.NAS_PWD }}" | sudo -S docker compose up -d --build
+                      
+                      echo "${{ secrets.NAS_PWD }}" | sudo -S /usr/local/bin/docker-compose up -d --build
