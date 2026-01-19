@@ -16,9 +16,7 @@ jobs:
           password: ${{ secrets.NAS_PWD }}
           port: ${{ secrets.NAS_PORT }}
           script: |
-            # 1. 프로젝트 폴더로 이동
-            cd /volume1/docker/side_pj_fe/side_pj_fe
-            # 2. 코드 업데이트
-            git pull origin main
-            # 3. 배포 (나스 본체에서 직접 실행하므로 경로 문제가 없습니다)
-            sudo docker compose up -d --build
+                      cd /volume1/docker/side_pj_fe/side_pj_fe
+                      git pull origin main
+                      # 비밀번호를 sudo에게 전달하는 방식 (-S 옵션 사용)
+                      echo "${{ secrets.NAS_PWD }}" | sudo -S docker compose up -d --build
