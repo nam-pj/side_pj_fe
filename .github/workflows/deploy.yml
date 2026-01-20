@@ -2,7 +2,7 @@ name: Deploy to Synology NAS
 
 on:
   push:
-    branches: [ main ]  # main 브랜치에 푸시하면 실행
+    branches: [main] # main 브랜치에 푸시하면 실행
 
 jobs:
   deploy:
@@ -16,8 +16,17 @@ jobs:
           password: ${{ secrets.NAS_PWD }}
           port: ${{ secrets.NAS_PORT }}
           script: |
-                      cd /volume1/docker/side_pj_fe/side_pj_fe
-                      git fetch origin main
-                      git reset --hard origin/main
-                      
-                      echo "${{ secrets.NAS_PWD }}" | sudo -S /usr/local/bin/docker-compose up -d --build
+            cd /volume1/docker/side_pj_fe/side_pj_fe
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "${{ secrets.NAS_PWD }}" | sudo -S /usr/local/bin/docker-compose up -d --build
+
+      - name: Notify Discord
+        if: always() # 배포가 성공하든 실패하든 알림을 보냅니다.
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: ${{ job.status == 'success' && 'info' || 'error' }}
+          details: "배포 상태: ${{ job.status }}"
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          avatarUrl: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
